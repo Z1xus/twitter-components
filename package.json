@@ -1,6 +1,6 @@
 {
   "name": "twitter-components",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Composable Twitter web components with typed data, slots, and server rendering.",
   "type": "module",
   "license": "MIT",
