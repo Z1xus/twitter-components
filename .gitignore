@@ -1,0 +1,11 @@
+node_modules/
+dist/
+docs/dist/
+docs/.astro/
+*.tgz
+.env*
+.DS_Store
+
+docs/src/content/docs/api/
+
+static/tweets/

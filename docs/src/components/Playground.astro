@@ -1,0 +1,350 @@
+---
+import { resolveOptions, actionNames } from "../../../src/options";
+const options = resolveOptions();
+const choices: Record<string, string[]> = {
+  theme: ["dark", "light", "dim", "auto"],
+  layout: ["timeline", "detail"],
+  density: ["comfortable", "compact"],
+  countFormat: ["compact", "full", "hidden"],
+  actionMode: ["static", "link", "event"],
+  repostCount: ["combined", "reposts"],
+  dateFormat: ["short", "full", "relative"],
+  mediaFit: ["contain", "cover"],
+  linkTarget: ["_blank", "_self"],
+};
+const names = (key: string) =>
+  key.replace(/[A-Z]/g, (letter) => ` ${letter.toLowerCase()}`);
+---
+
+<div class="playground">
+  <div class="preview-column">
+    <div class="preview">
+      <twitter-thread id="preview-thread"></twitter-thread>
+    </div>
+    <p class="event" id="event-output" role="status"></p>
+    <details>
+      <summary>Copy the data and options</summary>
+      <button id="copy-example" type="button">
+        Copy JSON
+      </button>
+      <pre id="example-code"></pre>
+    </details>
+  </div>
+  <form id="settings" class="settings">
+    <fieldset>
+      <legend>Display</legend>
+      {Object.entries(options)
+        .filter(([key]) => key !== "actions")
+        .map(([key, value]) => (
+          <label>
+            <span>{names(key)}</span>
+            {choices[key] ? (
+              <select name={key}>
+                {choices[key].map((option) => (
+                  <option value={option} selected={option === value}>
+                    {key === "actionMode"
+                      ? {
+                          static: "None",
+                          link: "Open on X",
+                          event: "Custom event",
+                        }[option]
+                      : option}
+                  </option>
+                ))}
+              </select>
+            ) : typeof value === "boolean" ? (
+              <input name={key} type="checkbox" checked={value} />
+            ) : (
+              <input
+                name={key}
+                type={typeof value === "number" ? "number" : "text"}
+                value={String(value)}
+                min={key === "mediaMaxHeight" ? 100 : undefined}
+                max={key === "mediaMaxHeight" ? 1600 : undefined}
+              />
+            )}
+          </label>
+        ))}
+      <label>
+        <span>reference time</span>
+        <input name="referenceTime" value="2026-09-13T15:00:00Z" />
+      </label>
+    </fieldset>
+    <div class="settings-column">
+      <fieldset>
+        <legend>Counts</legend>
+        {["replies", "reposts", "quotes", "likes", "views", "bookmarks"].map(
+          (name, index) => (
+            <label>
+              <span>{name}</span>
+              <input
+                name={`stats.${name}`}
+                type="number"
+                min="0"
+                step="1"
+                value={[12, 72, 18, 12480, 84947, 0][index]}
+                placeholder="Unknown"
+              />
+            </label>
+          ),
+        )}
+      </fieldset>
+      <fieldset>
+        <legend>Actions and content</legend>
+        <label>
+          <span>action order</span>
+          <input
+            name="actions"
+            value={options.actions.join(", ")}
+            aria-describedby="action-help"
+          />
+        </label>
+        <p id="action-help">
+          Available: {actionNames.join(", ")}. Leave empty to hide the row.
+        </p>
+        {["liked", "reposted", "bookmarked"].map((name) => (
+          <label>
+            <span>{name}</span>
+            <input name={`state.${name}`} type="checkbox" />
+          </label>
+        ))}
+        <label>
+          <span>images</span>
+          <select name="imageCount">
+            {[0, 1, 2, 3, 4].map((n) => (
+              <option selected={n === 1}>{n}</option>
+            ))}
+          </select>
+        </label>
+        <label>
+          <span>quote</span>
+          <input name="includeQuote" type="checkbox" checked />
+        </label>
+        <label>
+          <span>link card</span>
+          <input name="includeCard" type="checkbox" />
+        </label>
+        <label>
+          <span>reply</span>
+          <input name="includeReply" type="checkbox" checked />
+        </label>
+      </fieldset>
+    </div>
+  </form>
+  <div class="form-actions">
+    <button type="reset" form="settings">
+      Reset settings
+    </button>
+  </div>
+</div>
+<script>
+  import "../../../src/register";
+  import { resolveOptions, type TwitterOptions } from "../../../src/options";
+  import type { TwitterPost } from "../../../src/schema";
+  const form = document.querySelector<HTMLFormElement>("#settings")!;
+  const preview = document.querySelector("twitter-thread")!;
+  const output = document.querySelector<HTMLElement>("#event-output")!;
+  const code = document.querySelector<HTMLElement>("#example-code")!;
+  const sample: TwitterPost = {
+    author: "John Doe",
+    handle: "john_doe",
+    verified: true,
+    avatar: `${import.meta.env.BASE_URL.replace(/\/$/, "")}/avatar.svg`,
+    url: "https://x.com/john_doe/status/1",
+    timestamp: "2026-09-13T12:30:00Z",
+    content: "would you look at that! i can make fake tweets",
+    stats: {},
+  };
+  function update() {
+    try {
+      const settings: Record<string, unknown> = {};
+      const post = structuredClone(sample);
+      post.stats = {};
+      post.state = {};
+      for (const input of form.querySelectorAll<
+        HTMLInputElement | HTMLSelectElement
+      >("input,select")) {
+        const value =
+          input instanceof HTMLInputElement && input.type === "checkbox"
+            ? input.checked
+            : input.value;
+        if (input.name.startsWith("stats.")) {
+          if (value !== "")
+            Reflect.set(post.stats, input.name.slice(6), Number(value));
+        } else if (input.name.startsWith("state."))
+          Reflect.set(post.state, input.name.slice(6), value);
+        else if (input.name === "actions")
+          settings.actions = String(value)
+            .split(/[\s,]+/)
+            .filter(Boolean);
+        else
+          settings[input.name] =
+            input.type === "number" ? Number(value) : value;
+      }
+      const options = resolveOptions(settings as TwitterOptions);
+      if (Number(settings.imageCount))
+        post.images = Array.from(
+          { length: Number(settings.imageCount) },
+          () => ({
+            src: `${import.meta.env.BASE_URL.replace(/\/$/, "")}/landscape.svg`,
+            alt: "Blue mountains under a pale sky",
+            width: 1200,
+            height: 600,
+          }),
+        );
+      if (settings.includeQuote)
+        post.quote = {
+          ...sample,
+          content: "im so cool",
+          url: "https://x.com/john_doe/status/4",
+        };
+      if (settings.includeCard)
+        post.card = {
+          url: "https://example.com",
+          domain: "example.com",
+          title: "Example Domain",
+          description: "A domain for documentation examples.",
+          image: {
+            src: `${import.meta.env.BASE_URL.replace(/\/$/, "")}/landscape.svg`,
+            alt: "Blue mountains under a pale sky",
+            width: 1200,
+            height: 600,
+          },
+        };
+      const thread = {
+        label: "John Doe's posts",
+        posts: [
+          post,
+          ...(settings.includeReply
+            ? [
+                {
+                  ...sample,
+                  url: "https://x.com/john_doe/status/3",
+                  replyTo: "1",
+                  content: "this is really awesome john",
+                  stats: { replies: 0, likes: 31, views: 1700 },
+                },
+              ]
+            : []),
+        ],
+      };
+      preview.options = options;
+      preview.thread = thread;
+      code.textContent = JSON.stringify({ thread, options }, null, 2);
+      output.textContent = "";
+    } catch (error) {
+      output.textContent =
+        error instanceof Error ? error.message : String(error);
+    }
+  }
+  form.addEventListener("input", update);
+  form.addEventListener("reset", () => setTimeout(update, 0));
+  preview.addEventListener("twitter-action", (event) => {
+    output.textContent = `${event.detail.action}: ${event.detail.count ?? "no count"}`;
+  });
+  document.querySelector("#copy-example")!.addEventListener("click", () => {
+    void navigator.clipboard
+      .writeText(code.textContent ?? "")
+      .then(() => (output.textContent = "JSON copied."))
+      .catch(
+        () =>
+          (output.textContent =
+            "Copy failed. Select the JSON text to copy it."),
+      );
+  });
+  update();
+</script>
+<style>
+  .playground {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+    margin-top: 1.5rem;
+  }
+  .preview-column {
+    min-width: 0;
+  }
+  .preview {
+    border: 1px solid #2f3336;
+    border-radius: 16px;
+    overflow: hidden;
+    max-width: 600px;
+  }
+  .event {
+    font-size: 0.85rem;
+    color: var(--sl-color-gray-3);
+  }
+  .event:empty {
+    display: none;
+  }
+  .settings {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    align-items: start;
+  }
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .settings-column {
+    display: grid;
+    gap: 1rem;
+    min-width: 0;
+  }
+  fieldset {
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 12px;
+    padding: 1rem;
+    min-width: 0;
+    margin: 0;
+  }
+  legend {
+    font-weight: 600;
+    padding: 0 0.4rem;
+  }
+  label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 0.7rem 0;
+    font-size: 0.85rem;
+  }
+  label span {
+    text-transform: capitalize;
+  }
+  input,
+  select {
+    font: inherit;
+    color: var(--sl-color-text);
+    background: var(--sl-color-bg);
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 6px;
+    padding: 0.35rem;
+    min-width: 0;
+    width: 48%;
+  }
+  input[type="checkbox"] {
+    width: 1.1rem;
+    height: 1.1rem;
+    accent-color: #1d9bf0;
+  }
+  button {
+    padding: 0.6rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--sl-color-gray-4);
+    background: var(--sl-color-bg);
+    color: var(--sl-color-text);
+    cursor: pointer;
+  }
+  pre {
+    font-size: 0.75rem;
+    max-height: 350px;
+    overflow: auto;
+  }
+  #action-help {
+    font-size: 0.75rem;
+    color: var(--sl-color-gray-3);
+  }
+</style>

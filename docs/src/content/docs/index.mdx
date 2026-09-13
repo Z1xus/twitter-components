@@ -1,0 +1,65 @@
+---
+title: Twitter Components
+description: Twitter posts for your site, built with web components.
+---
+
+Add Twitter posts to your site using your own data.
+
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+
+## Install
+
+<Tabs syncKey="package-manager">
+<TabItem label="Bun">
+
+```sh
+bun add twitter-components
+```
+
+</TabItem>
+<TabItem label="npm">
+
+```sh
+npm install twitter-components
+```
+
+</TabItem>
+<TabItem label="pnpm">
+
+```sh
+pnpm add twitter-components
+```
+
+</TabItem>
+<TabItem label="Yarn">
+
+```sh
+yarn add twitter-components
+```
+
+</TabItem>
+</Tabs>
+
+## Start with a post
+
+```html
+<twitter-post id="post" theme="dark" count-format="compact"></twitter-post>
+```
+
+```js
+import "twitter-components/register";
+
+const post = document.querySelector("twitter-post");
+post.data = {
+  author: "John Doe",
+  handle: "john_doe",
+  url: "https://x.com/john_doe/status/1",
+  timestamp: "2026-09-13T12:30:00Z",
+  content: "would you look at that! i can make fake tweets",
+  stats: { replies: 12, reposts: 72, quotes: 18, likes: 12480, views: 84947 },
+};
+```
+
+Use `.post` as an alias for `.data`. A timeline uses `.thread` or `.data` with `{ label, posts }`.
+
+Try the [playground](/playground/), read the [composition guide](/composition/), or inspect the [settings](/settings/).

@@ -1,0 +1,55 @@
+---
+title: Development
+description: Build the package and documentation with your package manager.
+---
+
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+
+Use Node.js 22.12 or newer. Bun is the default package manager. The scripts also run with npm, pnpm, and Yarn.
+
+<Tabs syncKey="package-manager">
+<TabItem label="Bun">
+
+```sh
+bun install
+bun run check
+bun run build
+bun run docs:dev
+```
+
+</TabItem>
+<TabItem label="npm">
+
+```sh
+npm install
+npm run check
+npm run build
+npm run docs:dev
+```
+
+</TabItem>
+<TabItem label="pnpm">
+
+```sh
+pnpm install
+pnpm run check
+pnpm run build
+pnpm run docs:dev
+```
+
+</TabItem>
+<TabItem label="Yarn">
+
+```sh
+yarn install
+yarn run check
+yarn run build
+yarn run docs:dev
+```
+
+</TabItem>
+</Tabs>
+
+`docs:build` generates a static site in `docs/dist`. `build` creates the package files in `dist` and the custom elements manifest. Component pages and settings come from shared metadata. TypeDoc generates the API reference from the public exports.
+
+The docs build requires TypeScript 6.0 because TypeDoc does not support TypeScript 7.

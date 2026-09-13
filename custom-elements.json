@@ -1,0 +1,1995 @@
+{
+  "schemaVersion": "1.0.0",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "dist/elements.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "TwitterThreadElement",
+          "tagName": "twitter-thread",
+          "customElement": true,
+          "description": "A list of posts with lines connecting replies.",
+          "attributes": [
+            {
+              "name": "theme",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"dark\""
+            },
+            {
+              "name": "layout",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"timeline\""
+            },
+            {
+              "name": "density",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"comfortable\""
+            },
+            {
+              "name": "count-format",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"compact\""
+            },
+            {
+              "name": "show-zero-counts",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "show-bookmark-count",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "actions",
+              "type": {
+                "text": "string"
+              },
+              "default": "[\"reply\",\"repost\",\"like\",\"views\",\"bookmark\",\"share\"]"
+            },
+            {
+              "name": "action-mode",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"static\""
+            },
+            {
+              "name": "repost-count",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"combined\""
+            },
+            {
+              "name": "date-format",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"short\""
+            },
+            {
+              "name": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"en-US\""
+            },
+            {
+              "name": "time-zone",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"UTC\""
+            },
+            {
+              "name": "reference-time",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "show-media",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "show-grok",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "show-menu",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "show-connections",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "media-fit",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"contain\""
+            },
+            {
+              "name": "media-max-height",
+              "type": {
+                "text": "number"
+              },
+              "default": "510"
+            },
+            {
+              "name": "link-target",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"_blank\""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "data",
+              "type": {
+                "text": "TwitterThread"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "options",
+              "type": {
+                "text": "TwitterOptions"
+              }
+            }
+          ],
+          "slots": [
+            {
+              "name": ""
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "thread"
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--twitter-bg"
+            },
+            {
+              "name": "--twitter-fg"
+            },
+            {
+              "name": "--twitter-muted"
+            },
+            {
+              "name": "--twitter-border"
+            },
+            {
+              "name": "--twitter-thread-line"
+            },
+            {
+              "name": "--twitter-accent"
+            },
+            {
+              "name": "--twitter-font-family"
+            }
+          ],
+          "events": [
+            {
+              "name": "twitter-action",
+              "type": {
+                "text": "CustomEvent<TwitterActionDetail>"
+              }
+            },
+            {
+              "name": "twitter-copy",
+              "type": {
+                "text": "CustomEvent<{url: string}>"
+              }
+            },
+            {
+              "name": "twitter-error",
+              "type": {
+                "text": "CustomEvent<TwitterErrorDetail>"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "name": "TwitterPostElement",
+          "tagName": "twitter-post",
+          "customElement": true,
+          "description": "A post with slots for replacing its parts.",
+          "attributes": [
+            {
+              "name": "theme",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"dark\""
+            },
+            {
+              "name": "layout",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"timeline\""
+            },
+            {
+              "name": "density",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"comfortable\""
+            },
+            {
+              "name": "count-format",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"compact\""
+            },
+            {
+              "name": "show-zero-counts",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "show-bookmark-count",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "actions",
+              "type": {
+                "text": "string"
+              },
+              "default": "[\"reply\",\"repost\",\"like\",\"views\",\"bookmark\",\"share\"]"
+            },
+            {
+              "name": "action-mode",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"static\""
+            },
+            {
+              "name": "repost-count",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"combined\""
+            },
+            {
+              "name": "date-format",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"short\""
+            },
+            {
+              "name": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"en-US\""
+            },
+            {
+              "name": "time-zone",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"UTC\""
+            },
+            {
+              "name": "reference-time",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "show-media",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "show-grok",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "show-menu",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "show-connections",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "media-fit",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"contain\""
+            },
+            {
+              "name": "media-max-height",
+              "type": {
+                "text": "number"
+              },
+              "default": "510"
+            },
+            {
+              "name": "link-target",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"_blank\""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "data",
+              "type": {
+                "text": "TwitterPost"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "options",
+              "type": {
+                "text": "TwitterOptions"
+              }
+            }
+          ],
+          "slots": [
+            {
+              "name": ""
+            },
+            {
+              "name": "avatar"
+            },
+            {
+              "name": "header"
+            },
+            {
+              "name": "media"
+            },
+            {
+              "name": "quote"
+            },
+            {
+              "name": "card"
+            },
+            {
+              "name": "actions"
+            },
+            {
+              "name": "footer"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "post"
+            },
+            {
+              "name": "details"
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--twitter-bg"
+            },
+            {
+              "name": "--twitter-fg"
+            },
+            {
+              "name": "--twitter-muted"
+            },
+            {
+              "name": "--twitter-border"
+            },
+            {
+              "name": "--twitter-thread-line"
+            },
+            {
+              "name": "--twitter-accent"
+            },
+            {
+              "name": "--twitter-font-family"
+            }
+          ],
+          "events": [
+            {
+              "name": "twitter-action",
+              "type": {
+                "text": "CustomEvent<TwitterActionDetail>"
+              }
+            },
+            {
+              "name": "twitter-copy",
+              "type": {
+                "text": "CustomEvent<{url: string}>"
+              }
+            },
+            {
+              "name": "twitter-error",
+              "type": {
+                "text": "CustomEvent<TwitterErrorDetail>"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "name": "TwitterAvatarElement",
+          "tagName": "twitter-avatar",
+          "customElement": true,
+          "description": "A profile image, or the author's initial when no image is set.",
+          "attributes": [
+            {
+              "name": "theme",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"dark\""
+            },
+            {
+              "name": "layout",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"timeline\""
+            },
+            {
+              "name": "density",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"comfortable\""
+            },
+            {
+              "name": "count-format",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"compact\""
+            },
+            {
+              "name": "show-zero-counts",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "show-bookmark-count",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "actions",
+              "type": {
+                "text": "string"
+              },
+              "default": "[\"reply\",\"repost\",\"like\",\"views\",\"bookmark\",\"share\"]"
+            },
+            {
+              "name": "action-mode",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"static\""
+            },
+            {
+              "name": "repost-count",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"combined\""
+            },
+            {
+              "name": "date-format",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"short\""
+            },
+            {
+              "name": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"en-US\""
+            },
+            {
+              "name": "time-zone",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"UTC\""
+            },
+            {
+              "name": "reference-time",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "show-media",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "show-grok",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "show-menu",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "show-connections",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "media-fit",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"contain\""
+            },
+            {
+              "name": "media-max-height",
+              "type": {
+                "text": "number"
+              },
+              "default": "510"
+            },
+            {
+              "name": "link-target",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"_blank\""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "data",
+              "type": {
+                "text": "TwitterAvatar"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "options",
+              "type": {
+                "text": "TwitterOptions"
+              }
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "image"
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--twitter-bg"
+            },
+            {
+              "name": "--twitter-fg"
+            },
+            {
+              "name": "--twitter-muted"
+            },
+            {
+              "name": "--twitter-border"
+            },
+            {
+              "name": "--twitter-thread-line"
+            },
+            {
+              "name": "--twitter-accent"
+            },
+            {
+              "name": "--twitter-font-family"
+            }
+          ],
+          "events": [
+            {
+              "name": "twitter-action",
+              "type": {
+                "text": "CustomEvent<TwitterActionDetail>"
+              }
+            },
+            {
+              "name": "twitter-copy",
+              "type": {
+                "text": "CustomEvent<{url: string}>"
+              }
+            },
+            {
+              "name": "twitter-error",
+              "type": {
+                "text": "CustomEvent<TwitterErrorDetail>"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "name": "TwitterHeaderElement",
+          "tagName": "twitter-header",
+          "customElement": true,
+          "description": "Author, handle, date, and source menu.",
+          "attributes": [
+            {
+              "name": "theme",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"dark\""
+            },
+            {
+              "name": "layout",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"timeline\""
+            },
+            {
+              "name": "density",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"comfortable\""
+            },
+            {
+              "name": "count-format",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"compact\""
+            },
+            {
+              "name": "show-zero-counts",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "show-bookmark-count",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "actions",
+              "type": {
+                "text": "string"
+              },
+              "default": "[\"reply\",\"repost\",\"like\",\"views\",\"bookmark\",\"share\"]"
+            },
+            {
+              "name": "action-mode",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"static\""
+            },
+            {
+              "name": "repost-count",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"combined\""
+            },
+            {
+              "name": "date-format",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"short\""
+            },
+            {
+              "name": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"en-US\""
+            },
+            {
+              "name": "time-zone",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"UTC\""
+            },
+            {
+              "name": "reference-time",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "show-media",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "show-grok",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "show-menu",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "show-connections",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "media-fit",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"contain\""
+            },
+            {
+              "name": "media-max-height",
+              "type": {
+                "text": "number"
+              },
+              "default": "510"
+            },
+            {
+              "name": "link-target",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"_blank\""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "data",
+              "type": {
+                "text": "TwitterHeader"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "options",
+              "type": {
+                "text": "TwitterOptions"
+              }
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "header"
+            },
+            {
+              "name": "author"
+            },
+            {
+              "name": "handle"
+            },
+            {
+              "name": "date"
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--twitter-bg"
+            },
+            {
+              "name": "--twitter-fg"
+            },
+            {
+              "name": "--twitter-muted"
+            },
+            {
+              "name": "--twitter-border"
+            },
+            {
+              "name": "--twitter-thread-line"
+            },
+            {
+              "name": "--twitter-accent"
+            },
+            {
+              "name": "--twitter-font-family"
+            }
+          ],
+          "events": [
+            {
+              "name": "twitter-action",
+              "type": {
+                "text": "CustomEvent<TwitterActionDetail>"
+              }
+            },
+            {
+              "name": "twitter-copy",
+              "type": {
+                "text": "CustomEvent<{url: string}>"
+              }
+            },
+            {
+              "name": "twitter-error",
+              "type": {
+                "text": "CustomEvent<TwitterErrorDetail>"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "name": "TwitterContentElement",
+          "tagName": "twitter-content",
+          "customElement": true,
+          "description": "Post text and links. Text is escaped before rendering.",
+          "attributes": [
+            {
+              "name": "theme",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"dark\""
+            },
+            {
+              "name": "layout",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"timeline\""
+            },
+            {
+              "name": "density",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"comfortable\""
+            },
+            {
+              "name": "count-format",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"compact\""
+            },
+            {
+              "name": "show-zero-counts",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "show-bookmark-count",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "actions",
+              "type": {
+                "text": "string"
+              },
+              "default": "[\"reply\",\"repost\",\"like\",\"views\",\"bookmark\",\"share\"]"
+            },
+            {
+              "name": "action-mode",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"static\""
+            },
+            {
+              "name": "repost-count",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"combined\""
+            },
+            {
+              "name": "date-format",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"short\""
+            },
+            {
+              "name": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"en-US\""
+            },
+            {
+              "name": "time-zone",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"UTC\""
+            },
+            {
+              "name": "reference-time",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "show-media",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "show-grok",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "show-menu",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "show-connections",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "media-fit",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"contain\""
+            },
+            {
+              "name": "media-max-height",
+              "type": {
+                "text": "number"
+              },
+              "default": "510"
+            },
+            {
+              "name": "link-target",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"_blank\""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "data",
+              "type": {
+                "text": "TwitterContent"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "options",
+              "type": {
+                "text": "TwitterOptions"
+              }
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "content"
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--twitter-bg"
+            },
+            {
+              "name": "--twitter-fg"
+            },
+            {
+              "name": "--twitter-muted"
+            },
+            {
+              "name": "--twitter-border"
+            },
+            {
+              "name": "--twitter-thread-line"
+            },
+            {
+              "name": "--twitter-accent"
+            },
+            {
+              "name": "--twitter-font-family"
+            }
+          ],
+          "events": [
+            {
+              "name": "twitter-action",
+              "type": {
+                "text": "CustomEvent<TwitterActionDetail>"
+              }
+            },
+            {
+              "name": "twitter-copy",
+              "type": {
+                "text": "CustomEvent<{url: string}>"
+              }
+            },
+            {
+              "name": "twitter-error",
+              "type": {
+                "text": "CustomEvent<TwitterErrorDetail>"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "name": "TwitterMediaElement",
+          "tagName": "twitter-media",
+          "customElement": true,
+          "description": "One to four images with alt text.",
+          "attributes": [
+            {
+              "name": "theme",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"dark\""
+            },
+            {
+              "name": "layout",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"timeline\""
+            },
+            {
+              "name": "density",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"comfortable\""
+            },
+            {
+              "name": "count-format",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"compact\""
+            },
+            {
+              "name": "show-zero-counts",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "show-bookmark-count",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "actions",
+              "type": {
+                "text": "string"
+              },
+              "default": "[\"reply\",\"repost\",\"like\",\"views\",\"bookmark\",\"share\"]"
+            },
+            {
+              "name": "action-mode",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"static\""
+            },
+            {
+              "name": "repost-count",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"combined\""
+            },
+            {
+              "name": "date-format",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"short\""
+            },
+            {
+              "name": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"en-US\""
+            },
+            {
+              "name": "time-zone",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"UTC\""
+            },
+            {
+              "name": "reference-time",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "show-media",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "show-grok",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "show-menu",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "show-connections",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "media-fit",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"contain\""
+            },
+            {
+              "name": "media-max-height",
+              "type": {
+                "text": "number"
+              },
+              "default": "510"
+            },
+            {
+              "name": "link-target",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"_blank\""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "data",
+              "type": {
+                "text": "TwitterImage[]"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "options",
+              "type": {
+                "text": "TwitterOptions"
+              }
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "media"
+            },
+            {
+              "name": "image"
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--twitter-bg"
+            },
+            {
+              "name": "--twitter-fg"
+            },
+            {
+              "name": "--twitter-muted"
+            },
+            {
+              "name": "--twitter-border"
+            },
+            {
+              "name": "--twitter-thread-line"
+            },
+            {
+              "name": "--twitter-accent"
+            },
+            {
+              "name": "--twitter-font-family"
+            }
+          ],
+          "events": [
+            {
+              "name": "twitter-action",
+              "type": {
+                "text": "CustomEvent<TwitterActionDetail>"
+              }
+            },
+            {
+              "name": "twitter-copy",
+              "type": {
+                "text": "CustomEvent<{url: string}>"
+              }
+            },
+            {
+              "name": "twitter-error",
+              "type": {
+                "text": "CustomEvent<TwitterErrorDetail>"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "name": "TwitterCardElement",
+          "tagName": "twitter-card",
+          "customElement": true,
+          "description": "A link preview with optional image.",
+          "attributes": [
+            {
+              "name": "theme",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"dark\""
+            },
+            {
+              "name": "layout",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"timeline\""
+            },
+            {
+              "name": "density",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"comfortable\""
+            },
+            {
+              "name": "count-format",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"compact\""
+            },
+            {
+              "name": "show-zero-counts",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "show-bookmark-count",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "actions",
+              "type": {
+                "text": "string"
+              },
+              "default": "[\"reply\",\"repost\",\"like\",\"views\",\"bookmark\",\"share\"]"
+            },
+            {
+              "name": "action-mode",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"static\""
+            },
+            {
+              "name": "repost-count",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"combined\""
+            },
+            {
+              "name": "date-format",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"short\""
+            },
+            {
+              "name": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"en-US\""
+            },
+            {
+              "name": "time-zone",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"UTC\""
+            },
+            {
+              "name": "reference-time",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "show-media",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "show-grok",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "show-menu",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "show-connections",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "media-fit",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"contain\""
+            },
+            {
+              "name": "media-max-height",
+              "type": {
+                "text": "number"
+              },
+              "default": "510"
+            },
+            {
+              "name": "link-target",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"_blank\""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "data",
+              "type": {
+                "text": "NonNullable<TwitterPost['card']>"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "options",
+              "type": {
+                "text": "TwitterOptions"
+              }
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "image"
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--twitter-bg"
+            },
+            {
+              "name": "--twitter-fg"
+            },
+            {
+              "name": "--twitter-muted"
+            },
+            {
+              "name": "--twitter-border"
+            },
+            {
+              "name": "--twitter-thread-line"
+            },
+            {
+              "name": "--twitter-accent"
+            },
+            {
+              "name": "--twitter-font-family"
+            }
+          ],
+          "events": [
+            {
+              "name": "twitter-action",
+              "type": {
+                "text": "CustomEvent<TwitterActionDetail>"
+              }
+            },
+            {
+              "name": "twitter-copy",
+              "type": {
+                "text": "CustomEvent<{url: string}>"
+              }
+            },
+            {
+              "name": "twitter-error",
+              "type": {
+                "text": "CustomEvent<TwitterErrorDetail>"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "name": "TwitterQuoteElement",
+          "tagName": "twitter-quote",
+          "customElement": true,
+          "description": "A quoted post.",
+          "attributes": [
+            {
+              "name": "theme",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"dark\""
+            },
+            {
+              "name": "layout",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"timeline\""
+            },
+            {
+              "name": "density",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"comfortable\""
+            },
+            {
+              "name": "count-format",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"compact\""
+            },
+            {
+              "name": "show-zero-counts",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "show-bookmark-count",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "actions",
+              "type": {
+                "text": "string"
+              },
+              "default": "[\"reply\",\"repost\",\"like\",\"views\",\"bookmark\",\"share\"]"
+            },
+            {
+              "name": "action-mode",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"static\""
+            },
+            {
+              "name": "repost-count",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"combined\""
+            },
+            {
+              "name": "date-format",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"short\""
+            },
+            {
+              "name": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"en-US\""
+            },
+            {
+              "name": "time-zone",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"UTC\""
+            },
+            {
+              "name": "reference-time",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "show-media",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "show-grok",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "show-menu",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "show-connections",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "media-fit",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"contain\""
+            },
+            {
+              "name": "media-max-height",
+              "type": {
+                "text": "number"
+              },
+              "default": "510"
+            },
+            {
+              "name": "link-target",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"_blank\""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "data",
+              "type": {
+                "text": "NonNullable<TwitterPost['quote']>"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "options",
+              "type": {
+                "text": "TwitterOptions"
+              }
+            }
+          ],
+          "slots": [],
+          "cssParts": [],
+          "cssProperties": [
+            {
+              "name": "--twitter-bg"
+            },
+            {
+              "name": "--twitter-fg"
+            },
+            {
+              "name": "--twitter-muted"
+            },
+            {
+              "name": "--twitter-border"
+            },
+            {
+              "name": "--twitter-thread-line"
+            },
+            {
+              "name": "--twitter-accent"
+            },
+            {
+              "name": "--twitter-font-family"
+            }
+          ],
+          "events": [
+            {
+              "name": "twitter-action",
+              "type": {
+                "text": "CustomEvent<TwitterActionDetail>"
+              }
+            },
+            {
+              "name": "twitter-copy",
+              "type": {
+                "text": "CustomEvent<{url: string}>"
+              }
+            },
+            {
+              "name": "twitter-error",
+              "type": {
+                "text": "CustomEvent<TwitterErrorDetail>"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "name": "TwitterActionsElement",
+          "tagName": "twitter-actions",
+          "customElement": true,
+          "description": "Action buttons and counts. Actions can open links or send events.",
+          "attributes": [
+            {
+              "name": "theme",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"dark\""
+            },
+            {
+              "name": "layout",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"timeline\""
+            },
+            {
+              "name": "density",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"comfortable\""
+            },
+            {
+              "name": "count-format",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"compact\""
+            },
+            {
+              "name": "show-zero-counts",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "show-bookmark-count",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "actions",
+              "type": {
+                "text": "string"
+              },
+              "default": "[\"reply\",\"repost\",\"like\",\"views\",\"bookmark\",\"share\"]"
+            },
+            {
+              "name": "action-mode",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"static\""
+            },
+            {
+              "name": "repost-count",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"combined\""
+            },
+            {
+              "name": "date-format",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"short\""
+            },
+            {
+              "name": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"en-US\""
+            },
+            {
+              "name": "time-zone",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"UTC\""
+            },
+            {
+              "name": "reference-time",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "show-media",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "show-grok",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "show-menu",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "show-connections",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "media-fit",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"contain\""
+            },
+            {
+              "name": "media-max-height",
+              "type": {
+                "text": "number"
+              },
+              "default": "510"
+            },
+            {
+              "name": "link-target",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"_blank\""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "data",
+              "type": {
+                "text": "TwitterPost"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "options",
+              "type": {
+                "text": "TwitterOptions"
+              }
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "actions"
+            },
+            {
+              "name": "action"
+            },
+            {
+              "name": "count"
+            },
+            {
+              "name": "reply"
+            },
+            {
+              "name": "repost"
+            },
+            {
+              "name": "quote"
+            },
+            {
+              "name": "like"
+            },
+            {
+              "name": "views"
+            },
+            {
+              "name": "bookmark"
+            },
+            {
+              "name": "share"
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--twitter-bg"
+            },
+            {
+              "name": "--twitter-fg"
+            },
+            {
+              "name": "--twitter-muted"
+            },
+            {
+              "name": "--twitter-border"
+            },
+            {
+              "name": "--twitter-thread-line"
+            },
+            {
+              "name": "--twitter-accent"
+            },
+            {
+              "name": "--twitter-font-family"
+            }
+          ],
+          "events": [
+            {
+              "name": "twitter-action",
+              "type": {
+                "text": "CustomEvent<TwitterActionDetail>"
+              }
+            },
+            {
+              "name": "twitter-copy",
+              "type": {
+                "text": "CustomEvent<{url: string}>"
+              }
+            },
+            {
+              "name": "twitter-error",
+              "type": {
+                "text": "CustomEvent<TwitterErrorDetail>"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

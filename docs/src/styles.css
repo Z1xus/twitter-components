@@ -1,0 +1,13 @@
+:root {
+  --sl-color-accent-low: #082f49;
+  --sl-color-accent: #1d9bf0;
+  --sl-color-accent-high: #bae6fd;
+  --sl-content-width: 60rem;
+}
+.site-title {
+  letter-spacing: -0.035em;
+}
+.sl-markdown-content twitter-post,
+.sl-markdown-content twitter-thread {
+  margin: 0;
+}
