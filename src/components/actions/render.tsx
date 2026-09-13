@@ -99,7 +99,9 @@ function Action({
     title: label,
   };
   const body = [
-    <span class="glyph">{raw(icon(action))}</span>,
+    <span class="glyph">
+      {raw(icon(action === "like" && selected ? "liked" : action))}
+    </span>,
     showCount && count ? (
       <span part="count" class="count">
         {count}

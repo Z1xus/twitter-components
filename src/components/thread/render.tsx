@@ -14,6 +14,7 @@ export function renderThread(
   settings: TwitterOptions = {},
 ): string {
   const options = resolveOptions(settings);
+  const detail = options.layout === "detail";
   return element(
     "twitter-thread",
     themeStyles + styles,
@@ -22,14 +23,16 @@ export function renderThread(
         {thread.posts.map((post, index, posts) => {
           const connectedAbove =
             options.showConnections &&
-            index > 0 &&
+            index > (detail ? 1 : 0) &&
             post.replyTo === postId(posts[index - 1]);
           return raw(
             renderPost(post, {
               ...options,
+              layout: detail && index === 0 ? "detail" : "timeline",
               connectedAbove,
               connectedBelow:
                 options.showConnections &&
+                (!detail || index > 0) &&
                 index + 1 < posts.length &&
                 posts[index + 1].replyTo === postId(post),
               separator: index > 0 && !connectedAbove,
