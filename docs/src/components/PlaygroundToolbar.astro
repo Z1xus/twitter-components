@@ -1,0 +1,17 @@
+---
+const { form } = Astro.props;
+---
+
+<div class="toolbar">
+  <button type="reset" form={form} aria-label="Reset settings">
+    Reset
+  </button>
+</div>
+<style>
+  .toolbar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+  }
+</style>

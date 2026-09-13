@@ -1,8 +1,19 @@
 ---
 title: Playground
-description: Adjust the display, counts, and actions in a live timeline.
+description: Customize posts and profiles.
 ---
 
 import Playground from "../../components/Playground.astro";
+import ProfilePlayground from "../../components/ProfilePlayground.astro";
+import { Tabs, TabItem } from "@astrojs/starlight/components";
 
-<Playground />
+<div className="playground-tabs">
+  <Tabs>
+    <TabItem label="Posts">
+      <Playground />
+    </TabItem>
+    <TabItem label="Profile">
+      <ProfilePlayground />
+    </TabItem>
+  </Tabs>
+</div>

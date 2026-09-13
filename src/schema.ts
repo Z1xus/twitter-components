@@ -109,6 +109,7 @@ export function postId(post: Pick<TwitterPost, "url" | "id">): string {
 }
 
 export const twitterProfileSchema = twitterAvatarSchema.extend({
+  url: httpsUrl.optional(),
   verified: z.boolean().optional(),
   banner: twitterImageSchema.optional(),
   bio: z.string().optional(),

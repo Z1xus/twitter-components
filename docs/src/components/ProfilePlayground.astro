@@ -1,0 +1,175 @@
+---
+import "../styles/playground.css";
+import PlaygroundToolbar from "./PlaygroundToolbar.astro";
+const fields = {
+  author: "John Doe",
+  handle: "john_doe",
+  url: "https://z1x.us",
+  location: "",
+  joined: "September 2026",
+  following: "69",
+  followers: "6.1K",
+  posts: "1337",
+};
+---
+
+<div class="playground">
+  <PlaygroundToolbar form="profile-settings" />
+  <div class="preview-column">
+    <div class="preview">
+      <twitter-profile id="profile-preview"></twitter-profile>
+    </div>
+    <p class="event" id="profile-event" role="status"></p>
+    <details class="data-options">
+      <summary>Data and options</summary>
+      <button id="copy-profile" type="button">
+        Copy JSON
+      </button>
+      <pre id="profile-code"></pre>
+    </details>
+  </div>
+  <form id="profile-settings" class="settings">
+    <fieldset>
+      <legend>Profile</legend>
+      {Object.entries(fields).map(([name, value]) => (
+        <label>
+          <span>{name === "url" ? "Profile link" : name}</span>
+          <input name={name} value={value} />
+        </label>
+      ))}
+      <label>
+        <span>Bio</span>
+        <textarea name="bio" rows="3">im john doe and im real</textarea>
+      </label>
+      <label>
+        <span>Website</span>
+        <input name="website" value="https://z1x.us" />
+      </label>
+      <label>
+        <span>Website label</span>
+        <input name="websiteLabel" value="z1x.us" />
+      </label>
+    </fieldset>
+    <fieldset>
+      <legend>Display</legend>
+      <label>
+        <span>Theme</span>
+        <select name="theme">
+          {["dark", "light", "dim", "auto"].map((value) => (
+            <option>{value}</option>
+          ))}
+        </select>
+      </label>
+      <label>
+        <span>Count format</span>
+        <select name="countFormat">
+          {["compact", "full", "hidden"].map((value) => (
+            <option>{value}</option>
+          ))}
+        </select>
+      </label>
+      <label>
+        <span>Show zero counts</span>
+        <input name="showZeroCounts" type="checkbox" />
+      </label>
+      <label>
+        <span>Verified</span>
+        <input name="verified" type="checkbox" checked />
+      </label>
+      <label>
+        <span>Avatar</span>
+        <input name="avatar" type="checkbox" checked />
+      </label>
+      <label>
+        <span>Banner</span>
+        <input name="banner" type="checkbox" checked />
+      </label>
+      <label>
+        <span>Link target</span>
+        <select name="linkTarget">
+          <option>_blank</option>
+          <option>_self</option>
+        </select>
+      </label>
+    </fieldset>
+  </form>
+</div>
+<script>
+  import { defineTwitterComponents } from "../../../src/elements";
+  import { twitterProfileSchema } from "../../../src/schema";
+  import { resolveOptions, type TwitterOptions } from "../../../src/options";
+  defineTwitterComponents();
+  const form = document.querySelector<HTMLFormElement>("#profile-settings")!;
+  const preview = document.querySelector(
+    "#profile-preview",
+  ) as import("../../../src/elements").TwitterProfileElement;
+  const code = document.querySelector<HTMLElement>("#profile-code")!;
+  const output = document.querySelector<HTMLElement>("#profile-event")!;
+  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+  function update() {
+    try {
+      const values = new FormData(form);
+      const text = (key: string) => String(values.get(key) ?? "");
+      const count = (key: string) =>
+        text(key) === ""
+          ? undefined
+          : /^\d+$/.test(text(key))
+            ? Number(text(key))
+            : text(key);
+      const profile = twitterProfileSchema.parse({
+        author: text("author"),
+        handle: text("handle"),
+        url: text("url") || undefined,
+        bio: text("bio"),
+        location: text("location"),
+        joined: text("joined"),
+        following: count("following"),
+        followers: count("followers"),
+        posts: count("posts"),
+        verified: values.has("verified"),
+        avatar: values.has("avatar") ? `${base}/avatar.svg` : undefined,
+        banner: values.has("banner")
+          ? {
+              src: `${base}/landscape.svg`,
+              alt: "Blue mountains under a pale sky",
+              width: 1200,
+              height: 600,
+            }
+          : undefined,
+        website: text("website")
+          ? {
+              url: text("website"),
+              label: text("websiteLabel") || text("website"),
+            }
+          : undefined,
+      });
+      const options = resolveOptions({
+        theme: text("theme"),
+        countFormat: text("countFormat"),
+        showZeroCounts: values.has("showZeroCounts"),
+        linkTarget: text("linkTarget"),
+      } as TwitterOptions);
+      preview.data = profile;
+      preview.options = options;
+      code.textContent = JSON.stringify({ profile, options }, null, 2);
+      output.textContent = "";
+    } catch (error) {
+      output.textContent =
+        error instanceof Error ? error.message : String(error);
+    }
+  }
+  form.addEventListener("input", update);
+  form.addEventListener("submit", (event) => event.preventDefault());
+  form.addEventListener("reset", () => setTimeout(update, 0));
+  document.querySelector("#copy-profile")!.addEventListener("click", () => {
+    void navigator.clipboard
+      .writeText(code.textContent ?? "")
+      .then(() => {
+        output.textContent = "JSON copied.";
+      })
+      .catch(() => {
+        output.textContent = "Copy failed. Select the JSON text to copy it.";
+      });
+  });
+  update();
+</script>

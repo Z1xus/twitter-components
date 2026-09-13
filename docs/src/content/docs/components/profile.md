@@ -26,7 +26,9 @@ const html = renderTwitterProfile({
   author: 'John Doe',
   handle: 'john_doe',
   avatar: '/avatar.svg',
-  bio: 'would you look at that! i can make fake tweets',
+  bio: 'im john doe and im real',
+  url: 'https://z1x.us',
+  website: { url: 'https://z1x.us', label: 'z1x.us' },
   following: 42,
   followers: '1.2K',
   joined: 'September 2026'
