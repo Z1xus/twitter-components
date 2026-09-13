@@ -75,9 +75,4 @@ export function resolveOptions(
   return resolved;
 }
 
-export const themeStyles = `
-:host { --twitter-theme-bg:#000; --twitter-theme-fg:#e7e9ea; --twitter-theme-muted:#71767b; --twitter-theme-border:#2f3336; --twitter-theme-thread-line:#333639; }
-:host([theme="light"]) { --twitter-theme-bg:#fff; --twitter-theme-fg:#0f1419; --twitter-theme-muted:#536471; --twitter-theme-border:#cfd9de; --twitter-theme-thread-line:#cfd9de; }
-:host([theme="dim"]) { --twitter-theme-bg:#15202b; --twitter-theme-fg:#f7f9f9; --twitter-theme-muted:#8b98a5; --twitter-theme-border:#38444d; --twitter-theme-thread-line:#38444d; }
-@media(prefers-color-scheme:light) { :host([theme="auto"]) { --twitter-theme-bg:#fff; --twitter-theme-fg:#0f1419; --twitter-theme-muted:#536471; --twitter-theme-border:#cfd9de; --twitter-theme-thread-line:#cfd9de; } }
-`;
+export { themeStyles } from "./theme.js";

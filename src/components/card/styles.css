@@ -1,0 +1,38 @@
+:host {
+  margin-top: 12px;
+}
+a {
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--twitter-border, var(--twitter-theme-border, #2f3336));
+  border-radius: 16px;
+}
+a:hover {
+  text-decoration: none;
+  background: #080808;
+}
+img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1.91;
+  object-fit: cover;
+  border-bottom: 1px solid
+    var(--twitter-border, var(--twitter-theme-border, #2f3336));
+}
+.info {
+  padding: 12px;
+}
+.domain,
+.description {
+  color: var(--twitter-muted, var(--twitter-theme-muted, #71767b));
+}
+.title {
+  margin-top: 2px;
+}
+.description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 2px;
+}

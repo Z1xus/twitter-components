@@ -1,0 +1,16 @@
+:host {
+  margin-top: 12px;
+  border: 1px solid var(--twitter-border, var(--twitter-theme-border, #2f3336));
+  border-radius: 16px;
+  padding: 12px;
+}
+.author {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+twitter-header {
+  flex: 1;
+  min-width: 0;
+}

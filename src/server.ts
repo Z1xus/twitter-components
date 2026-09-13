@@ -4,9 +4,9 @@ import {
   twitterProfileSchema,
 } from "./schema.js";
 import { resolveOptions, type TwitterOptions } from "./options.js";
-import { renderProfile } from "./components/profile.js";
-import { renderPost } from "./components/post.js";
-import { renderThread } from "./components/thread.js";
+import { renderProfile } from "./components/profile/render.js";
+import { renderPost } from "./components/post/render.js";
+import { renderThread } from "./components/thread/render.js";
 
 export function renderTwitterPost(
   data: unknown,

@@ -1,0 +1,113 @@
+.header {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 20px;
+  min-width: 0;
+  flex-wrap: nowrap;
+}
+.identity {
+  display: flex;
+  gap: 4px;
+  min-width: 0;
+  overflow: hidden;
+  flex: 0 1 auto;
+}
+.name {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  min-width: 0;
+  font-weight: 700;
+  flex: 0 1 auto;
+}
+.name span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.handle {
+  color: var(--twitter-muted, var(--twitter-theme-muted, #71767b));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 0 2 auto;
+}
+.dot,
+.date,
+time {
+  color: var(--twitter-muted, var(--twitter-theme-muted, #71767b));
+  white-space: nowrap;
+}
+.date {
+  flex-shrink: 0;
+}
+.tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  padding-left: 4px;
+  color: var(--twitter-muted, var(--twitter-theme-muted, #71767b));
+}
+.tools svg {
+  width: 18.75px;
+  height: 18.75px;
+}
+.tools > a:hover,
+summary:hover {
+  color: var(--twitter-accent, #1d9bf0);
+}
+.verified {
+  color: var(--twitter-accent, #1d9bf0);
+  width: 18px;
+  height: 18px;
+}
+details {
+  position: relative;
+}
+summary {
+  list-style: none;
+}
+summary::-webkit-details-marker {
+  display: none;
+}
+.menu {
+  position: absolute;
+  right: 0;
+  top: 26px;
+  z-index: 5;
+  width: 240px;
+  max-width: 70vw;
+  padding: 12px;
+  border: 1px solid #2f3336;
+  border-radius: 12px;
+  background: var(--twitter-bg, var(--twitter-theme-bg, #000));
+  box-shadow: 0 0 12px #ffffff26;
+  color: var(--twitter-fg, var(--twitter-theme-fg, #e7e9ea));
+  font-size: 13px;
+  line-height: 18px;
+}
+.menu a {
+  display: block;
+  font-weight: 700;
+  padding-bottom: 8px;
+}
+.menu p {
+  margin: 0;
+  color: var(--twitter-muted, var(--twitter-theme-muted, #71767b));
+}
+.header.full-date {
+  flex-wrap: wrap;
+}
+.header.detail .identity {
+  flex-direction: column;
+  gap: 0;
+}
+.header.detail {
+  min-height: 40px;
+}
+.header.detail .dot,
+.header.detail .date {
+  display: none;
+}
