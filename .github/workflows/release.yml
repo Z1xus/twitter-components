@@ -1,8 +1,8 @@
 name: Release
 
 on:
-  release:
-    types: [published]
+  push:
+    tags: ["v*"]
 
 permissions:
   contents: read
@@ -38,5 +38,5 @@ jobs:
         run: npm install --global npm@latest
       - name: Publish to npm
         env:
-          DIST_TAG: ${{ github.event.release.prerelease && 'next' || 'latest' }}
+          DIST_TAG: ${{ contains(github.ref_name, '-') && 'next' || 'latest' }}
         run: npm publish --access public --provenance --tag "$DIST_TAG"
