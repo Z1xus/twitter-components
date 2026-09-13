@@ -7,6 +7,14 @@
 .site-title {
   letter-spacing: -0.035em;
 }
+header a[href="https://www.npmjs.com/package/twitter-components"] svg {
+  width: 2rem;
+  height: 2rem;
+}
+header a[href="https://github.com/z1xus/twitter-components"] svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
 .sl-markdown-content twitter-post,
 .sl-markdown-content twitter-thread {
   margin: 0;

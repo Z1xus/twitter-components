@@ -138,9 +138,10 @@ const names = (key: string) =>
   </div>
 </div>
 <script>
-  import "../../../src/register";
+  import { defineTwitterComponents } from "../../../src/elements";
   import { resolveOptions, type TwitterOptions } from "../../../src/options";
   import type { TwitterPost } from "../../../src/schema";
+  defineTwitterComponents();
   const form = document.querySelector<HTMLFormElement>("#settings")!;
   const preview = document.querySelector("twitter-thread")!;
   const output = document.querySelector<HTMLElement>("#event-output")!;

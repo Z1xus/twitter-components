@@ -23,6 +23,24 @@ export default defineConfig({
     starlight({
       title: "Twitter Components",
       favicon: "/avatar.svg",
+      tableOfContents: false,
+      social: [
+        {
+          icon: "github",
+          label: "GitHub",
+          href: "https://github.com/z1xus/twitter-components",
+        },
+        {
+          icon: "seti:npm",
+          label: "npm",
+          href: "https://www.npmjs.com/package/twitter-components",
+        },
+      ],
+      components: {
+        Footer: "./src/components/Footer.astro",
+        PageFrame: "./src/components/PageFrame.astro",
+        ThemeSelect: "./src/components/ThemeSelect.astro",
+      },
       customCss: ["./src/styles.css"],
       sidebar: [
         {

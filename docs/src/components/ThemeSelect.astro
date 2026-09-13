@@ -1,0 +1,95 @@
+---
+import DefaultThemeSelect from "@astrojs/starlight/components/ThemeSelect.astro";
+import { Icon } from "@astrojs/starlight/components";
+const themes = [
+  { value: "light", label: "Light theme", icon: "sun" },
+  { value: "dark", label: "Dark theme", icon: "moon" },
+  { value: "auto", label: "System theme", icon: "laptop" },
+] as const;
+---
+
+<theme-switcher role="group" aria-label="Color theme">
+  <div hidden>
+    <DefaultThemeSelect />
+  </div>
+  {themes.map(({ value, label, icon }) => (
+    <button
+      type="button"
+      data-theme={value}
+      aria-label={label}
+      title={label}
+      aria-pressed="false"
+    >
+      <Icon name={icon} size="1rem" />
+    </button>
+  ))}
+</theme-switcher>
+
+<script>
+  class ThemeSwitcher extends HTMLElement {
+    connectedCallback() {
+      const select = this.querySelector("select")!;
+      const updateButtons = () => {
+        document.querySelectorAll("theme-switcher").forEach((switcher) => {
+          const value = switcher.querySelector("select")?.value;
+          switcher
+            .querySelectorAll<HTMLButtonElement>("button[data-theme]")
+            .forEach((button) => {
+              button.setAttribute(
+                "aria-pressed",
+                String(button.dataset.theme === value),
+              );
+            });
+        });
+      };
+      this.querySelectorAll<HTMLButtonElement>("button[data-theme]").forEach(
+        (button) => {
+          button.addEventListener("click", () => {
+            select.value = button.dataset.theme!;
+            select.dispatchEvent(new Event("change", { bubbles: true }));
+            updateButtons();
+          });
+        },
+      );
+      updateButtons();
+    }
+  }
+  if (!customElements.get("theme-switcher")) {
+    customElements.define("theme-switcher", ThemeSwitcher);
+  }
+</script>
+
+<style>
+  theme-switcher {
+    display: inline-flex;
+    padding: 3px;
+    gap: 2px;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 8px;
+    background: var(--sl-color-bg);
+  }
+  button {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: 5px;
+    background: transparent;
+    color: var(--sl-color-gray-2);
+    cursor: pointer;
+  }
+  button:hover {
+    color: var(--sl-color-text);
+    background: var(--sl-color-gray-6);
+  }
+  button[aria-pressed="true"] {
+    background: var(--sl-color-gray-5);
+    color: var(--sl-color-white);
+  }
+  button:focus-visible {
+    outline: 2px solid var(--sl-color-text-accent);
+    outline-offset: 2px;
+  }
+</style>

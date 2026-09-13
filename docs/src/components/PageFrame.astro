@@ -1,0 +1,45 @@
+---
+import DefaultPageFrame from "@astrojs/starlight/components/PageFrame.astro";
+---
+
+<DefaultPageFrame>
+  <slot name="header" slot="header" />
+  <slot name="sidebar" slot="sidebar" />
+  <div class="page-content">
+    <slot />
+  </div>
+  <footer class="site-footer">
+    <a href="https://github.com/z1xus/twitter-components/blob/main/LICENSE">
+      MIT license
+    </a>
+    <a href="https://z1x.us">z1x.us</a>
+  </footer>
+</DefaultPageFrame>
+
+<style>
+  :global(.main-frame) {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  .page-content {
+    flex: 1;
+  }
+  .site-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.5rem var(--sl-content-pad-x, 1.5rem);
+    border-top: 1px solid var(--sl-color-hairline-shade);
+    background: var(--sl-color-bg-nav);
+    font-size: var(--sl-text-sm);
+  }
+  a {
+    color: var(--sl-color-gray-2);
+    text-decoration: none;
+  }
+  a:hover {
+    color: var(--sl-color-text);
+    text-decoration: underline;
+  }
+</style>
