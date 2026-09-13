@@ -26,6 +26,7 @@ export function renderThread(
           ...options,
           connectedAbove,
           connectedBelow:
+            options.showConnections &&
             index + 1 < posts.length &&
             posts[index + 1].replyTo === postId(post),
           separator: index > 0 && !connectedAbove,

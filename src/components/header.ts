@@ -10,6 +10,12 @@ export function renderHeader(
   settings: TwitterOptions = {},
 ): string {
   const options = resolveOptions(settings);
+  const date =
+    post.dateLabel ??
+    (post.timestamp ? formatDate(post.timestamp, options) : "");
+  const dateMarkup = date
+    ? `<span class="dot">·</span>${link(post.url, post.timestamp ? `<time datetime="${post.timestamp}">${escapeHtml(date)}</time>` : escapeHtml(date), ' class="date" part="date"')}`
+    : "";
   const detail = options.layout === "detail" && !compact;
   return element(
     "twitter-header",
@@ -19,7 +25,7 @@ export function renderHeader(
 .name { display:flex; align-items:center; gap:3px; min-width:0; font-weight:700; flex:0 1 auto; }
 .name span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .handle { color:var(--twitter-muted,var(--twitter-theme-muted,#71767b)); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:0 2 auto; }
-.dot, time { color:var(--twitter-muted,var(--twitter-theme-muted,#71767b)); white-space:nowrap; }
+.dot, .date, time { color:var(--twitter-muted,var(--twitter-theme-muted,#71767b)); white-space:nowrap; }
 .date { flex-shrink:0; }
 .tools { display:flex; align-items:center; gap:8px; margin-left:auto; padding-left:4px; color:var(--twitter-muted,var(--twitter-theme-muted,#71767b)); }
 .tools svg { width:18.75px; height:18.75px; }
@@ -33,6 +39,6 @@ summary::-webkit-details-marker { display:none; }
 .menu p { margin:0; color:var(--twitter-muted,var(--twitter-theme-muted,#71767b)); }
 ${detail ? ".identity { flex-direction:column; gap:0; } .header { min-height:40px; } .dot,.date { display:none; }" : ""}
 `,
-    `<div class="header" part="header"><div class="identity">${link(`https://x.com/${post.handle}`, `<span>${escapeHtml(post.author)}</span>${post.verified ? icon("verified", "verified") : ""}`, ` class="name" part="author" title="${escapeHtml(post.author)}"`)}${link(`https://x.com/${post.handle}`, `@${post.handle}`, ` class="handle" part="handle"`)}</div><span class="dot">·</span>${link(post.url, `<time datetime="${post.timestamp}">${formatDate(post.timestamp, options)}</time>`, ` class="date" part="date" title="${escapeHtml(post.timestamp)}"`)}${compact || (!options.showGrok && !options.showMenu) ? "" : `<div class="tools">${options.showGrok ? link(post.url, icon("grok"), ` aria-label="View post context on X" title="View post context on X"`) : ""}${options.showMenu ? `<details><summary aria-label="More post options" title="More">${icon("more")}</summary><div class="menu">${link(post.url, "View original post on X")}${note ? `<p>${escapeHtml(note)}</p>` : ""}</div></details>` : ""}</div>`}</div>`,
+    `<div class="header" part="header"><div class="identity">${link(`https://x.com/${post.handle}`, `<span>${escapeHtml(post.author)}</span>${post.verified ? icon("verified", "verified") : ""}`, ` class="name" part="author" title="${escapeHtml(post.author)}"`)}${link(`https://x.com/${post.handle}`, `@${post.handle}`, ` class="handle" part="handle"`)}</div>${dateMarkup}${compact || !post.url || (!options.showGrok && !options.showMenu) ? "" : `<div class="tools">${options.showGrok ? link(post.url, icon("grok"), ` aria-label="View post context on X" title="View post context on X"`) : ""}${options.showMenu ? `<details><summary aria-label="More post options" title="More">${icon("more")}</summary><div class="menu">${link(post.url, "View original post on X")}${note ? `<p>${escapeHtml(note)}</p>` : ""}</div></details>` : ""}</div>`}</div>`,
   );
 }

@@ -17,7 +17,10 @@ const httpsUrl = z.url().refine((value) => {
 const postUrl = z
   .string()
   .regex(/^https:\/\/x\.com\/[a-zA-Z0-9_]{1,15}\/status\/\d+$/);
-const count = z.number().int().nonnegative();
+const count = z.union([
+  z.number().int().nonnegative(),
+  z.string().regex(/^\d+(?:[.,]\d+)?[KMB]$/i),
+]);
 
 export const twitterImageSchema = z.object({
   src: localAsset,
@@ -26,12 +29,14 @@ export const twitterImageSchema = z.object({
   height: z.number().int().positive(),
 });
 const bodySchema = z.object({
+  id: z.string().min(1).optional(),
   author: z.string().min(1),
   handle: z.string().regex(/^[a-zA-Z0-9_]{1,15}$/),
   avatar: localAsset.optional(),
   verified: z.boolean().optional(),
-  url: postUrl,
-  timestamp: z.iso.datetime(),
+  url: postUrl.optional(),
+  timestamp: z.iso.datetime().optional(),
+  dateLabel: z.string().optional(),
   content: z.string(),
   images: z.array(twitterImageSchema).max(4).optional(),
   links: z
@@ -39,7 +44,7 @@ const bodySchema = z.object({
     .optional(),
 });
 export const twitterPostSchema = bodySchema.extend({
-  replyTo: z.string().regex(/^\d+$/).optional(),
+  replyTo: z.string().min(1).optional(),
   replyingTo: z.array(z.string().regex(/^[a-zA-Z0-9_]{1,15}$/)).optional(),
   stats: z
     .object({
@@ -61,7 +66,7 @@ export const twitterPostSchema = bodySchema.extend({
     .optional(),
   card: z
     .object({
-      url: httpsUrl,
+      url: httpsUrl.optional(),
       domain: z.string(),
       title: z.string(),
       description: z.string().optional(),
@@ -80,6 +85,7 @@ export const twitterHeaderSchema = twitterPostSchema.pick({
   verified: true,
   url: true,
   timestamp: true,
+  dateLabel: true,
 });
 export const twitterContentSchema = twitterPostSchema.pick({
   content: true,
@@ -98,6 +104,19 @@ export type TwitterImage = z.infer<typeof twitterImageSchema>;
 export type TwitterPost = z.infer<typeof twitterPostSchema>;
 export type TwitterThread = z.infer<typeof twitterThreadSchema>;
 export type TwitterThreads = ReadonlyMap<string, TwitterThread>;
-export function postId(post: Pick<TwitterPost, "url">): string {
-  return post.url.split("/").at(-1)!;
+export function postId(post: Pick<TwitterPost, "url" | "id">): string {
+  return post.id ?? post.url?.split("/").at(-1) ?? "";
 }
+
+export const twitterProfileSchema = twitterAvatarSchema.extend({
+  verified: z.boolean().optional(),
+  banner: twitterImageSchema.optional(),
+  bio: z.string().optional(),
+  location: z.string().optional(),
+  website: z.object({ url: httpsUrl, label: z.string() }).optional(),
+  joined: z.string().optional(),
+  following: count.optional(),
+  followers: count.optional(),
+  posts: count.optional(),
+});
+export type TwitterProfile = z.infer<typeof twitterProfileSchema>;

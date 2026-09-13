@@ -30,7 +30,7 @@ Use camelCase keys in `.options` or the HTML attributes below. An attribute over
 
 ## Counts
 
-`compact` uses locale-aware abbreviations. `full` uses group separators. `hidden` hides the visible value but keeps the exact accessible label. Missing values remain unknown. `showZeroCounts` controls whether zero values appear.
+`compact` uses locale-aware abbreviations. `full` uses group separators. `hidden` hides the visible value but keeps the exact accessible label. Missing values remain unknown. A preformatted string such as `2.9K` keeps its original precision in every count format. `showZeroCounts` controls whether zero values appear.
 
 Store raw reposts in `stats.reposts` and quotes in `stats.quotes`. The repost count combines them by default. Set `repostCount: 'reposts'` for reposts alone. The optional quote action always shows quotes alone.
 

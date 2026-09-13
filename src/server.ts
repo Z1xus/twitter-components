@@ -1,5 +1,10 @@
-import { twitterPostSchema, twitterThreadSchema } from "./schema.js";
+import {
+  twitterPostSchema,
+  twitterThreadSchema,
+  twitterProfileSchema,
+} from "./schema.js";
 import { resolveOptions, type TwitterOptions } from "./options.js";
+import { renderProfile } from "./components/profile.js";
 import { renderPost } from "./components/post.js";
 import { renderThread } from "./components/thread.js";
 
@@ -28,4 +33,15 @@ function targets(html: string, target: string): string {
   return target === "_self"
     ? html.replaceAll('target="_blank"', 'target="_self"')
     : html;
+}
+
+export function renderTwitterProfile(
+  data: unknown,
+  settings: TwitterOptions = {},
+): string {
+  const options = resolveOptions(settings);
+  return targets(
+    renderProfile(twitterProfileSchema.parse(data), options),
+    options.linkTarget,
+  );
 }

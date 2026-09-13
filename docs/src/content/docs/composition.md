@@ -65,3 +65,9 @@ twitter-actions::part(count) {
 The inherited CSS variables are `--twitter-bg`, `--twitter-fg`, `--twitter-muted`, `--twitter-border`, `--twitter-thread-line`, `--twitter-accent`, and `--twitter-font-family`. Each component page lists its CSS parts. Put a component in a slot to style its parts from your stylesheet. Shadow DOM keeps page styles from affecting the rest of the post.
 
 Set `--twitter-font-family` to use your own font. The default uses system fonts. Chirp files are not included.
+
+## Partial post data
+
+Omit `url` or `timestamp` when they are unknown. Without a URL, link actions and the source menu stay inactive. Use `dateLabel` for a date copied from a screenshot. It takes precedence over the formatted timestamp.
+
+Set `id` and `replyTo` to connect posts without source URLs. IDs must be unique within the thread. Preformatted counts such as `2.9K` retain their precision. They are not converted to exact numbers or added to other counts.

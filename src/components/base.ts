@@ -25,7 +25,12 @@ export function element(
 ): string {
   return `<${tag}${attributes}><template shadowrootmode="open"><style>${baseStyles}${styles}</style>${body}</template></${tag}>`;
 }
-export function link(url: string, body: string, attributes = ""): string {
+export function link(
+  url: string | undefined,
+  body: string,
+  attributes = "",
+): string {
+  if (!url) return `<span${attributes}>${body}</span>`;
   return `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer"${attributes}>${body}</a>`;
 }
 export function payload(data: unknown, options?: unknown): string {

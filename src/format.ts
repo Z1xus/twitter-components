@@ -1,7 +1,7 @@
 import type { ResolvedTwitterOptions } from "./options.js";
 
 export function formatCount(
-  value: number | undefined,
+  value: number | string | undefined,
   options: Pick<
     ResolvedTwitterOptions,
     "countFormat" | "showZeroCounts" | "locale"
@@ -13,6 +13,7 @@ export function formatCount(
     (!value && !options.showZeroCounts)
   )
     return "";
+  if (typeof value === "string") return value;
   return new Intl.NumberFormat(options.locale, {
     notation: options.countFormat === "full" ? "standard" : "compact",
     maximumFractionDigits: options.countFormat === "full" ? 0 : 1,

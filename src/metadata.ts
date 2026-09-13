@@ -22,6 +22,22 @@ export const optionAttributes = {
 } as const;
 export const componentMetadata = [
   {
+    name: "profile",
+    className: "TwitterProfileElement",
+    data: "TwitterProfile",
+    description: "A profile with a banner, bio, and follower counts.",
+    slots: ["banner", "avatar", "actions", "bio", "details", "stats", ""],
+    parts: [
+      "profile",
+      "banner",
+      "avatar",
+      "identity",
+      "bio",
+      "details",
+      "stats",
+    ],
+  },
+  {
     name: "thread",
     className: "TwitterThreadElement",
     data: "TwitterThread",

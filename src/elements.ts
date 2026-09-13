@@ -1,4 +1,6 @@
 import {
+  twitterProfileSchema,
+  type TwitterProfile,
   twitterAvatarSchema,
   twitterHeaderSchema,
   twitterContentSchema,
@@ -20,6 +22,7 @@ import {
 } from "./options.js";
 import { optionAttributes, optionKey } from "./metadata.js";
 import type { TwitterActionDetail } from "./events.js";
+import { renderProfile } from "./components/profile.js";
 import { renderPost } from "./components/post.js";
 import { renderThread } from "./components/thread.js";
 import { renderAvatar } from "./components/avatar.js";
@@ -56,7 +59,7 @@ export abstract class TwitterElement<T> extends HTMLElement {
   }
   protected abstract render(data: T, options: TwitterOptions): string;
   connectedCallback(): void {
-    for (const key of ["data", "options", "post", "thread"]) {
+    for (const key of ["data", "options", "post", "thread", "profile"]) {
       if (Object.prototype.hasOwnProperty.call(this, key)) {
         const value = Reflect.get(this, key);
         Reflect.deleteProperty(this, key);
@@ -200,10 +203,10 @@ export abstract class TwitterElement<T> extends HTMLElement {
       event.preventDefault();
       return;
     }
-    if (action === "share" && options.actionMode === "link") {
+    if (action === "share" && options.actionMode === "link" && post.url) {
       event.preventDefault();
       void Promise.resolve()
-        .then(() => navigator.clipboard.writeText(post.url))
+        .then(() => navigator.clipboard.writeText(post.url!))
         .then(() => {
           const status = this.shadowRoot?.querySelector('[role="status"]');
           if (status) status.textContent = "Post link copied";
@@ -225,6 +228,17 @@ export abstract class TwitterElement<T> extends HTMLElement {
           ),
         );
     }
+  }
+}
+export class TwitterProfileElement extends TwitterElement<TwitterProfile> {
+  get profile(): TwitterProfile | undefined {
+    return this.data;
+  }
+  set profile(value: TwitterProfile | undefined) {
+    this.data = value;
+  }
+  protected render(data: TwitterProfile, options: TwitterOptions): string {
+    return renderProfile(twitterProfileSchema.parse(data), options);
   }
 }
 export class TwitterPostElement extends TwitterElement<TwitterPost> {
@@ -311,6 +325,7 @@ export function defineTwitterComponents(
   registry: CustomElementRegistry = customElements,
 ): void {
   const components = {
+    profile: TwitterProfileElement,
     thread: TwitterThreadElement,
     post: TwitterPostElement,
     avatar: TwitterAvatarElement,
@@ -327,6 +342,7 @@ export function defineTwitterComponents(
 }
 declare global {
   interface HTMLElementTagNameMap {
+    "twitter-profile": TwitterProfileElement;
     "twitter-thread": TwitterThreadElement;
     "twitter-post": TwitterPostElement;
     "twitter-avatar": TwitterAvatarElement;

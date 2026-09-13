@@ -7,6 +7,259 @@
       "declarations": [
         {
           "kind": "class",
+          "name": "TwitterProfileElement",
+          "tagName": "twitter-profile",
+          "customElement": true,
+          "description": "A profile with a banner, bio, and follower counts.",
+          "attributes": [
+            {
+              "name": "theme",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"dark\""
+            },
+            {
+              "name": "layout",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"timeline\""
+            },
+            {
+              "name": "density",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"comfortable\""
+            },
+            {
+              "name": "count-format",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"compact\""
+            },
+            {
+              "name": "show-zero-counts",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "show-bookmark-count",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "actions",
+              "type": {
+                "text": "string"
+              },
+              "default": "[\"reply\",\"repost\",\"like\",\"views\",\"bookmark\",\"share\"]"
+            },
+            {
+              "name": "action-mode",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"static\""
+            },
+            {
+              "name": "repost-count",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"combined\""
+            },
+            {
+              "name": "date-format",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"short\""
+            },
+            {
+              "name": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"en-US\""
+            },
+            {
+              "name": "time-zone",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"UTC\""
+            },
+            {
+              "name": "reference-time",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "show-media",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "show-grok",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "show-menu",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "show-connections",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "media-fit",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"contain\""
+            },
+            {
+              "name": "media-max-height",
+              "type": {
+                "text": "number"
+              },
+              "default": "510"
+            },
+            {
+              "name": "link-target",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"_blank\""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "data",
+              "type": {
+                "text": "TwitterProfile"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "options",
+              "type": {
+                "text": "TwitterOptions"
+              }
+            }
+          ],
+          "slots": [
+            {
+              "name": "banner"
+            },
+            {
+              "name": "avatar"
+            },
+            {
+              "name": "actions"
+            },
+            {
+              "name": "bio"
+            },
+            {
+              "name": "details"
+            },
+            {
+              "name": "stats"
+            },
+            {
+              "name": ""
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "profile"
+            },
+            {
+              "name": "banner"
+            },
+            {
+              "name": "avatar"
+            },
+            {
+              "name": "identity"
+            },
+            {
+              "name": "bio"
+            },
+            {
+              "name": "details"
+            },
+            {
+              "name": "stats"
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--twitter-bg"
+            },
+            {
+              "name": "--twitter-fg"
+            },
+            {
+              "name": "--twitter-muted"
+            },
+            {
+              "name": "--twitter-border"
+            },
+            {
+              "name": "--twitter-thread-line"
+            },
+            {
+              "name": "--twitter-accent"
+            },
+            {
+              "name": "--twitter-font-family"
+            }
+          ],
+          "events": [
+            {
+              "name": "twitter-action",
+              "type": {
+                "text": "CustomEvent<TwitterActionDetail>"
+              }
+            },
+            {
+              "name": "twitter-copy",
+              "type": {
+                "text": "CustomEvent<{url: string}>"
+              }
+            },
+            {
+              "name": "twitter-error",
+              "type": {
+                "text": "CustomEvent<TwitterErrorDetail>"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "class",
           "name": "TwitterThreadElement",
           "tagName": "twitter-thread",
           "customElement": true,
