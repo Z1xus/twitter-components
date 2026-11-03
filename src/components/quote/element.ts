@@ -10,7 +10,7 @@ export class TwitterQuoteElement extends TwitterElement<
     options: TwitterOptions,
   ): string {
     return renderQuote(
-      twitterPostSchema.shape.quote.unwrap().parse(data),
+      twitterPostSchema.shape.quote.def.innerType.parse(data),
       options,
     );
   }

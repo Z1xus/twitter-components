@@ -1,4 +1,4 @@
-import { z } from "zod";
+import * as z from "zod/mini";
 
 export const actionNames = [
   "reply",
@@ -12,52 +12,60 @@ export const actionNames = [
 export type TwitterAction = (typeof actionNames)[number];
 
 export const twitterOptionsSchema = z.object({
-  theme: z.enum(["dark", "light", "dim", "auto"]).default("dark"),
-  layout: z.enum(["timeline", "detail"]).default("timeline"),
-  density: z.enum(["comfortable", "compact"]).default("comfortable"),
-  countFormat: z.enum(["compact", "full", "hidden"]).default("compact"),
-  showZeroCounts: z.boolean().default(false),
-  showBookmarkCount: z.boolean().default(false),
-  actions: z
-    .array(z.enum(actionNames))
-    .refine(
-      (items) => new Set(items).size === items.length,
-      "Actions must be unique",
-    )
-    .default(["reply", "repost", "like", "views", "bookmark", "share"]),
-  actionMode: z.enum(["link", "event", "static"]).default("static"),
-  repostCount: z.enum(["combined", "reposts"]).default("combined"),
-  dateFormat: z.enum(["short", "full", "relative"]).default("short"),
-  locale: z
-    .string()
-    .refine((value) => {
-      try {
-        new Intl.NumberFormat(value);
-        return true;
-      } catch {
-        return false;
-      }
-    }, "Invalid locale")
-    .default("en-US"),
-  timeZone: z
-    .string()
-    .refine((value) => {
-      try {
-        new Intl.DateTimeFormat("en", { timeZone: value });
-        return true;
-      } catch {
-        return false;
-      }
-    }, "Invalid time zone")
-    .default("UTC"),
-  referenceTime: z.iso.datetime().optional(),
-  showMedia: z.boolean().default(true),
-  showGrok: z.boolean().default(true),
-  showMenu: z.boolean().default(false),
-  showConnections: z.boolean().default(true),
-  mediaFit: z.enum(["contain", "cover"]).default("contain"),
-  mediaMaxHeight: z.number().int().min(100).max(1600).default(510),
-  linkTarget: z.enum(["_blank", "_self"]).default("_blank"),
+  theme: z._default(z.enum(["dark", "light", "dim", "auto"]), "dark"),
+  layout: z._default(z.enum(["timeline", "detail"]), "timeline"),
+  density: z._default(z.enum(["comfortable", "compact"]), "comfortable"),
+  countFormat: z._default(z.enum(["compact", "full", "hidden"]), "compact"),
+  showZeroCounts: z._default(z.boolean(), false),
+  showBookmarkCount: z._default(z.boolean(), false),
+  actions: z._default(
+    z
+      .array(z.enum(actionNames))
+      .check(
+        z.refine(
+          (items) => new Set(items).size === items.length,
+          "Actions must be unique",
+        ),
+      ),
+    ["reply", "repost", "like", "views", "bookmark", "share"],
+  ),
+  actionMode: z._default(z.enum(["link", "event", "static"]), "static"),
+  repostCount: z._default(z.enum(["combined", "reposts"]), "combined"),
+  dateFormat: z._default(z.enum(["short", "full", "relative"]), "short"),
+  locale: z._default(
+    z.string().check(
+      z.refine((value) => {
+        try {
+          new Intl.NumberFormat(value);
+          return true;
+        } catch {
+          return false;
+        }
+      }, "Invalid locale"),
+    ),
+    "en-US",
+  ),
+  timeZone: z._default(
+    z.string().check(
+      z.refine((value) => {
+        try {
+          new Intl.DateTimeFormat("en", { timeZone: value });
+          return true;
+        } catch {
+          return false;
+        }
+      }, "Invalid time zone"),
+    ),
+    "UTC",
+  ),
+  referenceTime: z.optional(z.iso.datetime()),
+  showMedia: z._default(z.boolean(), true),
+  showGrok: z._default(z.boolean(), true),
+  showMenu: z._default(z.boolean(), false),
+  showConnections: z._default(z.boolean(), true),
+  mediaFit: z._default(z.enum(["contain", "cover"]), "contain"),
+  mediaMaxHeight: z._default(z.int().check(z.gte(100), z.lte(1600)), 510),
+  linkTarget: z._default(z.enum(["_blank", "_self"]), "_blank"),
 });
 
 export type TwitterOptions = z.input<typeof twitterOptionsSchema>;

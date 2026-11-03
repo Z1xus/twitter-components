@@ -5,6 +5,6 @@ export class TwitterCardElement extends TwitterElement<
   NonNullable<TwitterPost["card"]>
 > {
   protected render(data: NonNullable<TwitterPost["card"]>): string {
-    return renderCard(twitterPostSchema.shape.card.unwrap().parse(data));
+    return renderCard(twitterPostSchema.shape.card.def.innerType.parse(data));
   }
 }

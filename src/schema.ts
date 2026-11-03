@@ -1,85 +1,89 @@
-import { z } from "zod";
+import * as z from "zod/mini";
 
-const localAsset = z.string().refine((value) => {
-  if (/^\/(?!\/)[a-zA-Z0-9/_.,%-]+$/.test(value) && !value.includes(".."))
-    return true;
-  try {
+const localAsset = z.string().check(
+  z.refine((value) => {
+    if (/^\/(?!\/)[a-zA-Z0-9/_.,%-]+$/.test(value) && !value.includes(".."))
+      return true;
+    try {
+      const url = new URL(value);
+      return url.protocol === "https:" && !url.username && !url.password;
+    } catch {
+      return false;
+    }
+  }, "Expected a root-relative asset or HTTPS URL"),
+);
+const httpsUrl = z.url().check(
+  z.refine((value) => {
     const url = new URL(value);
     return url.protocol === "https:" && !url.username && !url.password;
-  } catch {
-    return false;
-  }
-}, "Expected a root-relative asset or HTTPS URL");
-const httpsUrl = z.url().refine((value) => {
-  const url = new URL(value);
-  return url.protocol === "https:" && !url.username && !url.password;
-}, "Expected an HTTPS URL without credentials");
+  }, "Expected an HTTPS URL without credentials"),
+);
 const postUrl = z
   .string()
-  .regex(/^https:\/\/x\.com\/[a-zA-Z0-9_]{1,15}\/status\/\d+$/);
+  .check(z.regex(/^https:\/\/x\.com\/[a-zA-Z0-9_]{1,15}\/status\/\d+$/));
+const handle = z.string().check(z.regex(/^[a-zA-Z0-9_]{1,15}$/));
+const nonEmpty = z.string().check(z.minLength(1));
 const count = z.union([
-  z.number().int().nonnegative(),
-  z.string().regex(/^\d+(?:[.,]\d+)?[KMB]$/i),
+  z.int().check(z.nonnegative()),
+  z.string().check(z.regex(/^\d+(?:[.,]\d+)?[KMB]$/i)),
 ]);
 
 export const twitterImageSchema = z.object({
   src: localAsset,
   alt: z.string(),
-  width: z.number().int().positive(),
-  height: z.number().int().positive(),
+  width: z.int().check(z.positive()),
+  height: z.int().check(z.positive()),
 });
 const bodySchema = z.object({
-  id: z.string().min(1).optional(),
-  author: z.string().min(1),
-  handle: z.string().regex(/^[a-zA-Z0-9_]{1,15}$/),
-  avatar: localAsset.optional(),
-  verified: z.boolean().optional(),
-  url: postUrl.optional(),
-  timestamp: z.iso.datetime().optional(),
-  dateLabel: z.string().optional(),
+  id: z.optional(nonEmpty),
+  author: nonEmpty,
+  handle,
+  avatar: z.optional(localAsset),
+  verified: z.optional(z.boolean()),
+  url: z.optional(postUrl),
+  timestamp: z.optional(z.iso.datetime()),
+  dateLabel: z.optional(z.string()),
   content: z.string(),
-  images: z.array(twitterImageSchema).max(4).optional(),
-  links: z
-    .array(z.object({ text: z.string().min(1), url: httpsUrl }))
-    .optional(),
+  images: z.optional(z.array(twitterImageSchema).check(z.maxLength(4))),
+  links: z.optional(z.array(z.object({ text: nonEmpty, url: httpsUrl }))),
 });
-export const twitterPostSchema = bodySchema.extend({
-  replyTo: z.string().min(1).optional(),
-  replyingTo: z.array(z.string().regex(/^[a-zA-Z0-9_]{1,15}$/)).optional(),
-  stats: z
-    .object({
-      replies: count.optional(),
-      reposts: count.optional(),
-      likes: count.optional(),
-      views: count.optional(),
-      bookmarks: count.optional(),
-      quotes: count.optional(),
-    })
-    .optional(),
-  quote: bodySchema.optional(),
-  state: z
-    .object({
-      liked: z.boolean().optional(),
-      reposted: z.boolean().optional(),
-      bookmarked: z.boolean().optional(),
-    })
-    .optional(),
-  card: z
-    .object({
-      url: httpsUrl.optional(),
+export const twitterPostSchema = z.extend(bodySchema, {
+  replyTo: z.optional(nonEmpty),
+  replyingTo: z.optional(z.array(handle)),
+  stats: z.optional(
+    z.object({
+      replies: z.optional(count),
+      reposts: z.optional(count),
+      likes: z.optional(count),
+      views: z.optional(count),
+      bookmarks: z.optional(count),
+      quotes: z.optional(count),
+    }),
+  ),
+  quote: z.optional(bodySchema),
+  state: z.optional(
+    z.object({
+      liked: z.optional(z.boolean()),
+      reposted: z.optional(z.boolean()),
+      bookmarked: z.optional(z.boolean()),
+    }),
+  ),
+  card: z.optional(
+    z.object({
+      url: z.optional(httpsUrl),
       domain: z.string(),
       title: z.string(),
-      description: z.string().optional(),
-      image: twitterImageSchema.optional(),
-    })
-    .optional(),
+      description: z.optional(z.string()),
+      image: z.optional(twitterImageSchema),
+    }),
+  ),
 });
-export const twitterAvatarSchema = twitterPostSchema.pick({
+export const twitterAvatarSchema = z.pick(twitterPostSchema, {
   author: true,
   handle: true,
   avatar: true,
 });
-export const twitterHeaderSchema = twitterPostSchema.pick({
+export const twitterHeaderSchema = z.pick(twitterPostSchema, {
   author: true,
   handle: true,
   verified: true,
@@ -87,7 +91,7 @@ export const twitterHeaderSchema = twitterPostSchema.pick({
   timestamp: true,
   dateLabel: true,
 });
-export const twitterContentSchema = twitterPostSchema.pick({
+export const twitterContentSchema = z.pick(twitterPostSchema, {
   content: true,
   links: true,
 });
@@ -95,10 +99,10 @@ export type TwitterAvatar = z.infer<typeof twitterAvatarSchema>;
 export type TwitterHeader = z.infer<typeof twitterHeaderSchema>;
 export type TwitterContent = z.infer<typeof twitterContentSchema>;
 export const twitterThreadSchema = z.object({
-  label: z.string().min(1),
-  note: z.string().optional(),
-  capturedAt: z.iso.datetime().optional(),
-  posts: z.array(twitterPostSchema).min(1),
+  label: nonEmpty,
+  note: z.optional(z.string()),
+  capturedAt: z.optional(z.iso.datetime()),
+  posts: z.array(twitterPostSchema).check(z.minLength(1)),
 });
 export type TwitterImage = z.infer<typeof twitterImageSchema>;
 export type TwitterPost = z.infer<typeof twitterPostSchema>;
@@ -108,16 +112,16 @@ export function postId(post: Pick<TwitterPost, "url" | "id">): string {
   return post.id ?? post.url?.split("/").at(-1) ?? "";
 }
 
-export const twitterProfileSchema = twitterAvatarSchema.extend({
-  url: httpsUrl.optional(),
-  verified: z.boolean().optional(),
-  banner: twitterImageSchema.optional(),
-  bio: z.string().optional(),
-  location: z.string().optional(),
-  website: z.object({ url: httpsUrl, label: z.string() }).optional(),
-  joined: z.string().optional(),
-  following: count.optional(),
-  followers: count.optional(),
-  posts: count.optional(),
+export const twitterProfileSchema = z.extend(twitterAvatarSchema, {
+  url: z.optional(httpsUrl),
+  verified: z.optional(z.boolean()),
+  banner: z.optional(twitterImageSchema),
+  bio: z.optional(z.string()),
+  location: z.optional(z.string()),
+  website: z.optional(z.object({ url: httpsUrl, label: z.string() })),
+  joined: z.optional(z.string()),
+  following: z.optional(count),
+  followers: z.optional(count),
+  posts: z.optional(count),
 });
 export type TwitterProfile = z.infer<typeof twitterProfileSchema>;
